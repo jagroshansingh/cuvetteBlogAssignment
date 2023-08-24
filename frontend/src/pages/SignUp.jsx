@@ -28,7 +28,7 @@ export const SignUp = () => {
     {
         axios({
             method:'post',
-            url:`${process.env.REACT_APP_URL}/signup`,
+            url:`${process.env.REACT_APP_URL}/auth/signup`,
             data:cred
         })
         .then(res=>console.log(res))

@@ -18,10 +18,13 @@ export const SignIn = () => {
     } else {
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_URL}/signup`,
+        url: `${process.env.REACT_APP_URL}/auth/signin`,
         data: cred,
       })
-      .then(res=>console.log(res))
+      .then(res=>{
+        console.log(res)
+        // alert('')
+    })
       .catch(err=>console.log(err))
     }
   };
