@@ -15,7 +15,7 @@ AuthRouter.post('/signup',async(req,res)=>{
           }
         );
       } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error' });
       }
 })
 
@@ -29,12 +29,13 @@ AuthRouter.post('/signin', async (req, res) => {
           if (error) throw error;
   
           if (results.length > 0) {
-            res.status(200).json({ message: 'Login successful' });
+            res.send({ message: 'Login successful' });
           } else {
-            res.status(401).json({ error: 'Invalid credentials' });
+            res.send({ message: 'Invalid credentials' });
           }
         }
       );
+    // res.send(email)
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' });
     }

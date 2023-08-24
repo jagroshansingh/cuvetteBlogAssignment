@@ -1,32 +1,34 @@
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const navigate = useNavigate();
+  let api=import.meta.env.VITE_REACT_APP_URL
   let keep = {
     email: "",
     password: "",
   };
 
   const [cred, setCred] = React.useState(keep);
-  console.log(cred);
+//   console.log(cred);
 
   const handleSubmit = () => {
     if (cred.email == "" || cred.password == "") {
       alert("Empty Credentials!");
-      setCred(keep)
     } else {
       axios({
         method: "post",
-        url: `${process.env.REACT_APP_URL}/auth/signin`,
+        url: `${api}/auth/signin`,
         data: cred,
       })
       .then(res=>{
-        console.log(res)
-        // alert('')
+        alert(res.data.message)
+        if(res.data.message=='Login successful') navigate('/')
     })
       .catch(err=>console.log(err))
     }
+    setCred(keep)
   };
 
   const handleChange = (e) => {
@@ -59,6 +61,7 @@ export const SignIn = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={cred.email}
                   autoComplete="email"
                   required
                   onChange={handleChange}
@@ -82,6 +85,7 @@ export const SignIn = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={cred.password}
                   autoComplete="current-password"
                   required
                   onChange={handleChange}

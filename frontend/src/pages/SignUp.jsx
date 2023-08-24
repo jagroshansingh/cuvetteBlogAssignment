@@ -1,44 +1,54 @@
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
+  let api = import.meta.env.VITE_REACT_APP_URL;
   let keep = {
     email: "",
     password: "",
     cpassword: "",
   };
   const [cred, setCred] = React.useState(keep);
-  console.log(cred)
   const navigate = useNavigate();
 
-  const handleChange=(e)=>{
-    setCred({...cred,[e.target.name=='email'?'email':e.target.name=='password'?'password':'cpassword']:e.target.value})
-  }
+  const handleChange = (e) => {
+    setCred({
+      ...cred,
+      [e.target.name == "email"
+        ? "email"
+        : e.target.name == "password"
+        ? "password"
+        : "cpassword"]: e.target.value,
+    });
+  };
 
-  const handleSubmit=()=>{
-    if(cred.email=='' || cred.password=='' || cred.cpassword=='')
-    {
-        alert('Empty Credentials!')
-    }
-    else if(cred.password!==cred.cpassword)
-    {
-        alert("Password doesn't match")
-    }
-    else
-    {
-        axios({
-            method:'post',
-            url:`${process.env.REACT_APP_URL}/auth/signup`,
-            data:cred
+  const handleSubmit = () => {
+    if (cred.email == "" || cred.password == "" || cred.cpassword == "") {
+      alert("Empty Credentials!");
+    } else if (cred.password !== cred.cpassword) {
+      alert("Password doesn't match");
+    } else {
+      axios({
+        method: "post",
+        url: `${api}/auth/signup`,
+        data: cred,
+      })
+        .then((res) => {
+          alert(res.data.message);
+          if (res.data.message == "User registered successfully") navigate("/");
         })
-        .then(res=>console.log(res))
-        .catch(err=>console.log(err))
+        .catch((err) => console.log(err));
     }
-  }
+    setCred(keep);
+  };
 
   return (
     <div>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          SIGN-UP here
+        </h2>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" action="#" method="POST">
             <div>
@@ -53,6 +63,7 @@ export const SignUp = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={cred.email}
                   autoComplete="email"
                   required
                   onChange={handleChange}
@@ -76,6 +87,7 @@ export const SignUp = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={cred.password}
                   autoComplete="current-password"
                   required
                   onChange={handleChange}
@@ -91,14 +103,14 @@ export const SignUp = () => {
                 >
                   Confirm Password
                 </label>
-                <div className="text-sm">
-                </div>
+                <div className="text-sm"></div>
               </div>
               <div className="mt-2">
                 <input
                   id="cpassword"
                   name="cpassword"
                   type="password"
+                  value={cred.cpassword}
                   autoComplete="current-password"
                   required
                   onChange={handleChange}
